@@ -1,0 +1,20 @@
+[Unit]
+Description=Apex Citadel (4x FastAPI services)
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=%h/apex-orchestrator
+EnvironmentFile=%h/apex-orchestrator/.env
+
+# Run all four with separate processes
+ExecStart=/bin/bash -lc 'set -euo pipefail;   uvicorn brain_engine:app --host 0.0.0.0 --port 8000 &   uvicorn app_shadowglass:app --host 0.0.0.0 --port 8001 &   uvicorn app_executioner:app --host 0.0.0.0 --port 8002 &   uvicorn anti_rug_engine:app --host 0.0.0.0 --port 8003 &   wait'
+
+Restart=always
+RestartSec=2
+KillSignal=SIGINT
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=Apex Maestro Worker (%i)
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=%h/apex-orchestrator
+EnvironmentFile=%h/apex-orchestrator/.env
+Environment=MAESTRO_QUEUE_CONSUMER=worker-%i
+ExecStart=/bin/bash -lc 'python maestro_worker.py'
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

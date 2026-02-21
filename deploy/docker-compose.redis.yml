@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:7.4.1
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+volumes:
+  redis-data:
